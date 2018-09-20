@@ -17,18 +17,21 @@ def WalkQueue(entry, exit, maze):
     queue = deque([])
     traveledNodes = []
     traveledNodes.append(entry)
-    node = n.Node(entry, maze[int(entry[0])][int(entry[1])], traveledNodes)
+    node = n.Node(entry, getValue(entry), traveledNodes)
     queue.append(node)
     while str(queue.popleft().position) != exit:
         children = getChildren(node, maze)
-        for pos in children:
-            if pos in traveledNodes:
-                pass
-            else:
-                traveledNodes.append(pos)
-                newNode = n.Node(pos, getValue(pos,maze), traveledNodes, parent=node)
-                node = newNode
-                queue.append(node)
+        if not children:
+            pass
+        else:
+            for pos in children:
+                if pos in traveledNodes:
+                    pass
+                else:
+                    traveledNodes.append(pos)
+                    newNode = n.Node(pos, getValue(pos,maze), traveledNodes, parent=node)
+                    node = newNode
+                    queue.append(node)
     walkedPath = queue.popleft().path
     FINAL_PATH = ""
     for loc in walkedPath:
@@ -42,17 +45,21 @@ def WalkStack(entry, exit, maze):
         traveledNodes = []
         traveledNodes.append(entry)
         node = n.Node(entry, maze[int(entry[0])][int(entry[1])], traveledNodes)
-        stack.put(node)
+        stack.push(node)
         while str(stack.pop().position) != exit:
             children = getChildren(node, maze)
-            for pos in children:
-                if pos in traveledNodes:
-                    pass
-                else:
-                    traveledNodes.append(pos)
-                    newNode = n.Node(pos, maze[pos[0]][pos[1]], traveledNodes, parent=node)
-                    node = newNode
-                    stack.put(node)
+            if not children:
+                stack.pop()
+            else:
+                for pos in children:
+                    if pos in traveledNodes:
+                        pass
+                    else:
+                        traveledNodes.append(pos)
+                        newNode = n.Node(pos, getValue(pos, maze), traveledNodes, parent=node)
+                        node = newNode
+                        stack.push(node)
+
         FINAL_PATH = ""
         while stack.isEmpty() != True:
             FINAL_PATH = FINAL_PATH + stack.pop().location + " "
@@ -103,7 +110,7 @@ def main():
     entry, exit = findEnterAndExit(maze2d)
 
     print("Breath first search: ")
-    WalkQueue(entry, exit, maze2d)
+    # WalkQueue(entry, exit, maze2d)
 
     print("Depth first search: ")
     WalkStack(entry, exit, maze2d)
