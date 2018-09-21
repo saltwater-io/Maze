@@ -17,11 +17,21 @@ def WalkQueue(entry, exit, maze):
     queue = deque([])
     traveledNodes = []
     traveledNodes.append(entry)
-    node = n.Node(entry, getValue(entry), traveledNodes)
+    node = n.Node(entry, getValue(entry, maze), traveledNodes)
     queue.append(node)
     while str(queue.popleft().position) != exit:
         children = getChildren(node, maze)
         if not children:
+            node = queue.popleft()
+            children = getChildren(node, maze)
+            for pos in children:
+                if pos in traveledNodes:
+                    pass
+                else:
+                    traveledNodes.append(pos)
+                    newNode = n.Node(pos, getValue(pos ,maze), traveledNodes, parent=node)
+                    node = newNode
+                    queue.append(node)
             pass
         else:
             for pos in children:
@@ -49,7 +59,17 @@ def WalkStack(entry, exit, maze):
         while str(stack.pop().position) != exit:
             children = getChildren(node, maze)
             if not children:
-                stack.pop()
+                node = stack.pop()
+                children = getChildren()
+                for pos in children:
+                    if pos in traveledNodes:
+                        pass
+                    else:
+                        traveledNodes.append(pos)
+                        newNode = n.Node(pos, getValue(pos, maze), traveledNodes, parent=node)
+                        node = newNode
+                        stack.push(node)
+
             else:
                 for pos in children:
                     if pos in traveledNodes:
@@ -72,7 +92,7 @@ def getChildren(node, maze):
     c = int(node.position[1])
     if (r != 0) and maze[r+1][c] == 'P' or maze[r+1][c] == 'X':
         children.append(str(r + 1) + str(c))
-    if (r !=9) and maze[r-1][c] == 'P' or maze[r-1][c] == 'X':
+    if (r != 9) and maze[r-1][c] == 'P' or maze[r-1][c] == 'X':
         children.append(str(r-1) + str(c))
     if (c != 0) and maze[r][ -1] == 'P' or maze[r][c-1] == 'X':
         children.append(str(r) + str(c-1))
@@ -97,7 +117,7 @@ def main():
     # dir = input("Enter the directory of the maze.txt file please: ")
     testDir = "C:\\Users\\Dakota\\Desktop\\maze.txt"
     testRes = "C:\\Users\\dmcguire\\PycharmProjects\\ai\\resources\\maze.txt"
-    lines = open(testRes, 'r').readlines()
+    lines = open(testDir, 'r').readlines()
     maze2d = ['0']*10
     for g in range(10):
         maze2d[g] = ['0']*10
@@ -110,14 +130,12 @@ def main():
     entry, exit = findEnterAndExit(maze2d)
 
     print("Breath first search: ")
-    # WalkQueue(entry, exit, maze2d)
+    WalkQueue(entry, exit, maze2d)
 
     print("Depth first search: ")
-    WalkStack(entry, exit, maze2d)
+    # WalkStack(entry, exit, maze2d)
 
 
 if __name__ == "__main__":
     main()
     pass
-
-
