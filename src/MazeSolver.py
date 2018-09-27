@@ -180,17 +180,18 @@ def getChildren(node, maze):
     if (r != 0) and maze[r + 1][c] == 'P' or maze[r + 1][c] == 'X':  # If maze value is 'X', or 'P' add to children
         children.append(str(r + 1) + str(c))
 
-    # If not bottom row, check value of position directly to the bottom of current state
-    if (r != 9) and maze[r - 1][c] == 'P' or maze[r - 1][c] == 'X':  # If maze value is 'X', or 'P' add to children
-        children.append(str(r - 1) + str(c))
-
     # If column is not farthest left column, check value of position directly left of current state
     if (c != 0) and maze[r][c - 1] == 'P' or maze[r][c - 1] == 'X':  # If maze value is 'X', or 'P' add to children
         children.append(str(r) + str(c - 1))
 
+    # If not bottom row, check value of position directly to the bottom of current state
+    if (r != 9) and maze[r - 1][c] == 'P' or maze[r - 1][c] == 'X':  # If maze value is 'X', or 'P' add to children
+        children.append(str(r - 1) + str(c))
+
     # If column is not farthest right column, check value of position directly right of current state
     if (c != 9) and maze[r][c + 1] == 'P' or maze[r][c + 1] == 'X':  # If maze value is 'X', or 'P' add to children
         children.append(str(r) + str(c + 1))
+
     return children
 
 
