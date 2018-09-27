@@ -27,7 +27,7 @@ class Node(NodeMixin):
 
 
 # Generic stack: code taken from http://interactivepython.org/courselib/static/pythonds/BasicDS/ImplementingaStackinPython.html
-# Im using this stack as opposed to the prebuilt imported one because this code is much cleaner
+# Im using this stack as opposed to the precompiled imported one because this code is much cleaner
 class Stack:
     def __init__(self):  # initial constructor
         self.items = []
@@ -87,7 +87,7 @@ def WalkQueue(entry, exit, maze):
         # Grabs the children of node
         children = getChildren(node, maze)
         if not children:  # Checks to see if any children exist
-            pass
+            print("No solution! :(")
         else:  # if children do exists:
             for pos in children:  # Loops through each child/position in children
                 if pos in traveledNodes:  # Checks if position has been visited
