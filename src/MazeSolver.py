@@ -69,7 +69,7 @@ def WalkQueue(entry, maze):
     traveledNodes = []
     traveledNodes.append(entry)  # Entry stored
 
-    # list to hold all child nodes of a given state 
+    # list to hold all child nodes of a given state
     childNodes = []
 
     # Creates initial node at entry position containing value 'E'
@@ -77,12 +77,11 @@ def WalkQueue(entry, maze):
 
     queue.append(node)  # Adds node to queue
 
+    value = node.value  # Value is the maze value of the maze('E', 'P', 'X')
+    
     # Loop checks to see if the node at the front of the queue
     # is goal state e.g. (the node's value = 'X')
     # If not, continue walking.
-
-    value = node.value  # Value is the maze value of the maze('E', 'P', 'X')
-
     while str(value) != 'X':
         # Grabs the children of node
         children = getChildren(node, maze)
@@ -131,14 +130,13 @@ def WalkStack(entry, maze):
     node = Node(entry, getValue(entry, maze), traveledNodes)
 
     stack.push(node)  # Adds node to queue
-
-    # Loop checks to see if the node at the front of the stack
-    # is goal state e.g. (the node's value = 'X')
-    # If not, continue walking.
     node = stack.pop()
 
     value = node.value  # Value is the maze value of the maze('E', 'P', 'X')
 
+    # Loop checks to see if the node at the front of the stack
+    # is goal state e.g. (the node's value = 'X')
+    # If not, continue walking.
     while str(value) != 'X':
         # Grabs the children of node
         children = getChildren(node, maze)
