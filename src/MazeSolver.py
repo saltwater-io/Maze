@@ -49,20 +49,18 @@ class Stack:
 
 
 # This function receives the maze as a 2d-array and returns the entry and exit locations.
-def findEnterAndExit(maze):
+def findEntryOfMaze(maze):
     for i in range(10):  # i = column #, j = row
         for j in range(10):
             if maze[i][j] == 'E':
                 entry = str(i) + str(j)  # Entry to maze
-            if maze[i][j] == 'X':
-                exit = str(i) + str(j)  # Exit of maze
-    return entry, exit
+    return entry
 
 
 # Function walks through maze using a queue,
 # Receives the entry and exit positions,
 # As well as the maze as parameters
-def WalkQueue(entry, exit, maze):
+def WalkQueue(entry, maze):
 
     # queue to hold the successors of each node in the maze
     queue = deque([])
@@ -79,11 +77,13 @@ def WalkQueue(entry, exit, maze):
 
     queue.append(node)  # Adds node to queue
 
-    # Loop checks to see if the node position at the front of the queue
-    #  is goal state e.g. (the position with value = 'X')
+    # Loop checks to see if the node at the front of the queue
+    # is goal state e.g. (the node's value = 'X')
     # If not, continue walking.
-    position = queue.popleft().value  # Position in maze I.E. entry = 60
-    while str(position) != exit:
+
+    value = node.value  # Value is the maze value of the maze('E', 'P', 'X')
+
+    while str(value) != 'X':
         # Grabs the children of node
         children = getChildren(node, maze)
         if not children:  # Checks to see if any children exist
@@ -93,7 +93,7 @@ def WalkQueue(entry, exit, maze):
                 if pos in traveledNodes:  # Checks if position has been visited
                     pass
                 else:  # if position is fresh
-                    traveledNodes.append(pos)  # Drops position into
+                    traveledNodes.append(pos)  # Drops position into traveled nodes
                     newNode = Node(pos, getValue(pos, maze), node.ancestors, parent=node)  # Creates new node
                     childNodes.append(newNode)  # Throws the new node into the list of child nodes
 
@@ -103,20 +103,20 @@ def WalkQueue(entry, exit, maze):
             childNodes.clear()  # Clears the children for next set of child nodes
 
             node = queue.popleft()  # Gets next node in queue
-            position = node.position  # Sets current state position to the nodes position
+            value = node.value  # Grabs current state's maze value
 
             FINAL_PATH = []  # List of the of path from start to finish
 
-            if position == exit:  # Checks if current position state is indeed the goal state
+            if value == 'X':  # Checks if current position state is indeed the goal state
                 for ancestor in node.ancestors:  # Gets the parent of each node
                     FINAL_PATH.append(ancestor.position)  # adds their respective positions to the the final path
 
-                FINAL_PATH.append(position)  # Adds final goal state position to the final path
+                FINAL_PATH.append(node.position)  # Adds final goal state position to the final path
                 printPath(FINAL_PATH)  # Prints the walked path
 
 
 # Walks through maze using a stack LIFO
-def WalkStack(entry, exit, maze):
+def WalkStack(entry,maze):
 
     stack = Stack()  # Stack LIFO
 
@@ -132,12 +132,14 @@ def WalkStack(entry, exit, maze):
 
     stack.push(node)  # Adds node to queue
 
-    # Loop checks to see if the node position at top of the stack
-    # is the goal state e.g. (the position with value = 'X')
+    # Loop checks to see if the node at the front of the stack
+    # is goal state e.g. (the node's value = 'X')
     # If not, continue walking.
     node = stack.pop()
-    position = node.position  # Position in maze I.E. entry = 60
-    while str(position) != exit:
+
+    value = node.value  # Value is the maze value of the maze('E', 'P', 'X')
+
+    while str(value) != 'X':
         # Grabs the children of node
         children = getChildren(node, maze)
         if not children:  # Checks to see if any children exist
@@ -157,15 +159,16 @@ def WalkStack(entry, exit, maze):
             childNodes.clear()  # Clears the children for next set of child nodes
 
             node = stack.pop()  # Gets next node in queue
-            position = node.position  # Sets current state position to the nodes position
 
+            value = node.value # Grabs current state's maze value
+            
             FINAL_PATH = []  # List of the of path from start to finish
 
-            if position == exit:  # Checks if current position state is indeed the goal state
+            if value == 'X':  # Checks if current position state is indeed the goal state
                 for ancestor in node.ancestors:  # Gets the parent of each node
                     FINAL_PATH.append(ancestor.position)  # adds their respective positions to the the final path
 
-                FINAL_PATH.append(position)  # Adds final goal state position to the final path
+                FINAL_PATH.append(node.position)  # Adds final goal state position to the final path
                 printPath(FINAL_PATH)  # Prints the walked path
 
 # Gets child node positions of the current state
@@ -241,17 +244,17 @@ def main():
 
     drawMaze(maze)  # Draws maze
 
-    entry, exit = findEnterAndExit(maze)  # Maze entry and exit
+    entry = findEntryOfMaze(maze)  # Maze entry and exit
 
     print("")  # Output formatting
     print("Breath first search: ")
 
-    WalkQueue(entry, exit, maze)  # Walks through maze with queue (FIFO)
+    WalkQueue(entry, maze)  # Walks through maze with queue (FIFO)
 
     print("")  # Output formatting
     print("Depth first search: ")
 
-    WalkStack(entry, exit, maze)  # Walks through maze with a stack (LIFO)
+    WalkStack(entry, maze)  # Walks through maze with a stack (LIFO)
 
 
 if __name__ == "__main__":  # Start
