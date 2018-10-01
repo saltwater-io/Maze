@@ -48,7 +48,7 @@ class Stack:
         return len(self.items)
 
 
-# This function receives the maze as a 2d-array and returns the entry and exit locations.
+# This function receives the maze as a 2d-array and returns the entry location.
 def findEntryOfMaze(maze):
     for i in range(10):  # i = column #, j = row
         for j in range(10):
@@ -116,7 +116,7 @@ def WalkQueue(entry, maze):
 
 
 # Walks through maze using a stack LIFO
-def WalkStack(entry,maze):
+def WalkStack(entry, maze):
 
     stack = Stack()  # Stack LIFO
 
@@ -149,7 +149,7 @@ def WalkStack(entry,maze):
                 if pos in traveledNodes:  # Checks if position has been visited
                     pass
                 else:  # if position is fresh
-                    traveledNodes.append(pos)  # Drops position into
+                    traveledNodes.append(pos)  # Drops position into traveled nodes
                     newNode = Node(pos, getValue(pos, maze), node.ancestors, parent=node)  # Creates new node
                     childNodes.append(newNode)  # Throws the new node into the list of child nodes
 
@@ -161,7 +161,7 @@ def WalkStack(entry,maze):
             node = stack.pop()  # Gets next node in queue
 
             value = node.value # Grabs current state's maze value
-            
+
             FINAL_PATH = []  # List of the of path from start to finish
 
             if value == 'X':  # Checks if current position state is indeed the goal state
@@ -259,4 +259,3 @@ def main():
 
 if __name__ == "__main__":  # Start
     main()
-    pass
