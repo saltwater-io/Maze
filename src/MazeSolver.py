@@ -69,7 +69,7 @@ def WalkQueue(entry, maze):
     traveledNodes = []
     traveledNodes.append(entry)  # Entry stored
 
-    # list to hold all child nodes of a given state
+    # list to hold all child nodes of a given state 
     childNodes = []
 
     # Creates initial node at entry position containing value 'E'
