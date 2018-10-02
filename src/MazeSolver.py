@@ -242,7 +242,7 @@ def main():
 
     drawMaze(maze)  # Draws maze
 
-    entry = findEntryOfMaze(maze)  # Maze entry and exit
+    entry = findEntryOfMaze(maze)  # Maze entry
 
     print("")  # Output formatting
     print("Breath first search: ")
